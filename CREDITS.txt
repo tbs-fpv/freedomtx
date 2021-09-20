@@ -2390,3 +2390,7 @@ William Reppert
 Benoit Sylvain Jaugeon
 Ruediger Benning
 James Davis
+Easyrotor
+Tony Fiddler
+Thomas Frach
+Joseph Maresca
