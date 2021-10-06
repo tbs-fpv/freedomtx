@@ -65,7 +65,7 @@ set(FIRMWARE_CXX_FLAGS_DEBUG "-g" CACHE STRING "Additional flags for firmware ta
 
 set(THIRDPARTY_DIR thirdparty)
 set(LUA_DIR ${THIRDPARTY_DIR}/Lua/src)
-set(COOS_DIR ${THIRDPARTY_DIR}/CoOS)
+set(RTOS_DIR ${THIRDPARTY_DIR}/FreeRTOS)
 set(FATFS_DIR ${THIRDPARTY_DIR}/FatFs)
 set(RADIO_BIN_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -531,7 +531,7 @@ if(NOT MSVC)
       endif()
     endif()
 
-    add_definitions(-DRTOS_COOS)
+    add_definitions(-DFREE_RTOS)
 
     add_executable(firmware ${SRC} ${FIRMWARE_HEADERS})
     link_libraries(firmware -lstdc++)

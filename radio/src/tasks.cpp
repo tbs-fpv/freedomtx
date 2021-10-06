@@ -168,7 +168,6 @@ TASK_FUNCTION(mixerTask)
 #endif
 
 #if !defined(PCBSKY9X)
-    mixerSchedulerClearTrigger();
     mixerSchedulerEnableTrigger();
 #endif
 
@@ -221,10 +220,6 @@ TASK_FUNCTION(mixerTask)
   #endif
 #endif
 
-#if defined(PCBSKY9X) && !defined(SIMU)
-      usbJoystickUpdate();
-#endif
-
       DEBUG_TIMER_START(debugTimerTelemetryWakeup);
       telemetryWakeup();
       DEBUG_TIMER_STOP(debugTimerTelemetryWakeup);
@@ -237,10 +232,6 @@ TASK_FUNCTION(mixerTask)
       t0 = getTmr2MHz() - t0;
       if (t0 > maxMixerDuration)
         maxMixerDuration = t0;
-
-      // TODO:
-      // - check the cause of timeouts when switching
-      //    between protocols with multi-proto RF
     }
   }
 }
@@ -272,6 +263,13 @@ bool perMainEnabled = true;
 
 TASK_FUNCTION(menusTask)
 {
+#if defined(SPLASH) && !defined(STARTUP_ANIMATION)
+  if (!UNEXPECTED_SHUTDOWN()) {
+    drawSplash();
+    TRACE("drawSplash() completed");
+  }
+#endif
+
   opentxInit();
 
 #if defined(PWR_BUTTON_PRESS)
@@ -331,8 +329,6 @@ TASK_FUNCTION(menusTask)
   drawSleepBitmap();
   opentxClose();
   boardOff(); // Only turn power off if necessary
-
-  TASK_RETURN();
 }
 
 #if defined(INTERNAL_MODULE_CRSF) && !defined(SIMU)
@@ -409,7 +405,8 @@ void crossfireTasksStop()
 
 void tasksStart()
 {
-  RTOS_INIT();
+  RTOS_CREATE_MUTEX(audioMutex);
+  RTOS_CREATE_MUTEX(mixerMutex);
 
 #if defined(CLI)
   cliStart();
@@ -425,9 +422,6 @@ void tasksStart()
 #if !defined(SIMU)
   RTOS_CREATE_TASK(audioTaskId, audioTask, "audio", audioStack, AUDIO_STACK_SIZE, AUDIO_TASK_PRIO);
 #endif
-
-  RTOS_CREATE_MUTEX(audioMutex);
-  RTOS_CREATE_MUTEX(mixerMutex);
 
   RTOS_START();
 }

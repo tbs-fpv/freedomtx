@@ -37,12 +37,19 @@
 #define SYSTEM_STACK_SIZE      504
 #endif
 
-#define MIXER_TASK_PRIO        5
-#define AUDIO_TASK_PRIO        7
-#define MENUS_TASK_PRIO        10
-#define CLI_TASK_PRIO          10
-#define CROSSFIRE_TASK_PRIO    0
-#define RTOS_SYS_TASK_PRIO     10
+#if defined(FREE_RTOS)
+#define CROSSFIRE_TASK_PRIO    (tskIDLE_PRIORITY + 5)
+#define RTOS_SYS_TASK_PRIO     (tskIDLE_PRIORITY + 1)
+#define MIXER_TASK_PRIO        (tskIDLE_PRIORITY + 4)
+#define AUDIO_TASK_PRIO        (tskIDLE_PRIORITY + 2)
+#define MENUS_TASK_PRIO        (tskIDLE_PRIORITY + 1)
+#define CLI_TASK_PRIO          (tskIDLE_PRIORITY + 1)
+#else
+#define MIXER_TASK_PRIO        (4)
+#define AUDIO_TASK_PRIO        (2)
+#define MENUS_TASK_PRIO        (1)
+#define CLI_TASK_PRIO          (1)
+#endif
 
 extern RTOS_TASK_HANDLE menusTaskId;
 extern RTOS_DEFINE_STACK(menusStack, MENUS_STACK_SIZE);

@@ -18,10 +18,20 @@
  * GNU General Public License for more details.
  */
 
-#include <OsConfig.h>
 #include "board.h"
 #if defined(STM32F2)
-  #include "dwt.h"    // the old ST library that we use does not define DWT register for STM32F2xx
+#include "dwt.h"    // the old ST library that we use does not define DWT register for STM32F2xx
+#endif
+
+/*!<
+System frequency (Hz).
+*/
+#if defined(STM32F4)
+#define CFG_CPU_FREQ            (168000000)
+#elif defined(STM32)
+#define CFG_CPU_FREQ            (120000000)
+#else
+#define CFG_CPU_FREQ            (36000000)  // TODO check if really correct for sky9x?
 #endif
 
 #define SYSTEM_TICKS_1US    ((CFG_CPU_FREQ + 500000)  / 1000000)      // number of system ticks in 1us
@@ -34,14 +44,14 @@ void delaysInit(void)
   DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 }
 
-void delay_01us(uint16_t nb)
+void delay_01us(uint32_t  nb)
 {
   volatile uint32_t dwtStart = DWT->CYCCNT;
   volatile uint32_t dwtTotal = (SYSTEM_TICKS_01US * nb) - 10;
   while ((DWT->CYCCNT - dwtStart) < dwtTotal);
 }
 
-void delay_us(uint16_t nb)
+void delay_us(uint32_t  nb)
 {
   volatile uint32_t dwtStart = DWT->CYCCNT;
   volatile uint32_t dwtTotal = (SYSTEM_TICKS_1US * nb) - 10;
