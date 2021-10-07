@@ -32,6 +32,7 @@
 #endif
 
 #include "board.h"
+#include "FreeRTOS.h"
 
 #if defined(STM32)
 #include "usbd_conf.h"

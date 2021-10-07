@@ -342,7 +342,7 @@ TASK_FUNCTION(systemTask)
     if (getCrsfFlag(CRSF_FLAG_SHOW_BOOTLOADER_ICON)) {
       if (delayCount == 0) {
         delayCount = RTOS_GET_TIME();
-        RTOS_DEL_TASK(menusTaskId);
+        RTOS_DEL_TASK(menusTaskId.rtos_handle);
         lcdOn();
         drawDownload();
         storageDirty(EE_GENERAL|EE_MODEL);
@@ -372,6 +372,7 @@ TASK_FUNCTION(systemTask)
   TASK_RETURN();
 }
 
+typedef void               (*FUNCPtr)(void*);
 void crossfireTasksCreate()
 {
   RTOS_CREATE_TASK(crossfireTaskId, (FUNCPtr)CROSSFIRE_TASK_ADDRESS, "crossfire", crossfireStack, CROSSFIRE_STACK_SIZE, CROSSFIRE_TASK_PRIO);
@@ -398,8 +399,8 @@ void crossfireTasksStop()
 {
   NVIC_DisableIRQ(INTERRUPT_EXTI_IRQn);
   NVIC_DisableIRQ(INTERRUPT_NOT_TIMER_IRQn);
-  RTOS_DEL_TASK(crossfireTaskId);
-  RTOS_DEL_TASK(systemTaskId);
+  RTOS_DEL_TASK(crossfireTaskId.rtos_handle);
+  RTOS_DEL_TASK(systemTaskId.rtos_handle);
 }
 #endif
 

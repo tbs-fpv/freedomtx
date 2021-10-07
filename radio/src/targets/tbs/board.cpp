@@ -490,8 +490,10 @@ static uint8_t checkDefaultWord(){
 void trampolineInit(void)
 {
   memset(trampoline, 0, sizeof(uint32_t) * TRAMPOLINE_INDEX_COUNT);
+#if 0
   trampoline[RTOS_WAIT_FLAG_TRAMPOILINE] = (uint32_t)(&CoWaitForSingleFlag);
   trampoline[RTOS_CLEAR_FLAG_TRAMPOILINE] = (uint32_t)(&CoClearFlag);
+#endif
   crossfireSharedData.trampoline = trampoline;
 }
 
@@ -607,6 +609,7 @@ void ESP_DMA_Stream_IRQHandler(void)
 
 void INTERRUPT_EXTI_IRQHandler(void)
 {
+#if 0
   DEBUG_INTERRUPT(INT_EXTI15_10);
   CoEnterISR();
   void (* exti_irq)(void);
@@ -617,10 +620,12 @@ void INTERRUPT_EXTI_IRQHandler(void)
     isr_SetFlag(get_task_flag(XF_TASK_FLAG));
   }
   CoExitISR();
+#endif
 }
 
 void INTERRUPT_TIM13_IRQHandler()
 {
+#if 0
   DEBUG_INTERRUPT(INT_TIM13);
   CoEnterISR();
   if (INTERRUPT_NOT_TIMER->SR & TIM_SR_UIF)
@@ -635,6 +640,7 @@ void INTERRUPT_TIM13_IRQHandler()
     }
   }
   CoExitISR();
+#endif
 }
 
 #if defined(DEBUG) && defined(AUX_SERIAL_GPIO)

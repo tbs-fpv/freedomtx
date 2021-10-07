@@ -340,9 +340,9 @@ void sdInit()
   if(sdMounted())
     return;
   TRACE("sdInit");
-  
-  ioMutex = CoCreateMutex();
-  if (ioMutex >= CFG_MAX_MUTEX) {
+
+  RTOS_CREATE_MUTEX(ioMutex);
+  if (!ioMutex.rtos_handle) {
     // sd error
     return;
   }

@@ -196,6 +196,8 @@ inline void RTOS_CREATE_TASK(pthread_t &taskId, void * (*task)(void *), const ch
   #define RTOS_CREATE_TASK(h,task,name,stackStruct,stackSize,prio) \
     _RTOS_CREATE_TASK(&h,task,name,stackStruct.stack,stackSize,prio)
 
+  #define RTOS_DEL_TASK(taskHandle) vTaskDelete(taskHandle)
+
   static inline void _RTOS_CREATE_MUTEX(RTOS_MUTEX_HANDLE* h)
   {
     h->rtos_handle = xSemaphoreCreateBinaryStatic(&h->mutex_struct);
@@ -248,10 +250,15 @@ inline void RTOS_CREATE_TASK(pthread_t &taskId, void * (*task)(void *), const ch
     return getStackAvailable(&_main_stack_start, stackSize());
   }
 
+#if 0
   //#define RTOS_CREATE_FLAG(flag)        flag = CoCreateFlag(false, false)
   //#define RTOS_SET_FLAG(flag)           (void)CoSetFlag(flag)
   //#define RTOS_CLEAR_FLAG(flag)         (void)CoClearFlag(flag)
-
+#else
+  #define RTOS_CREATE_FLAG(flag)
+  #define RTOS_SET_FLAG(flag)
+  #define RTOS_CLEAR_FLAG(flag)
+#endif
   // returns true if timeout
   static inline bool _RTOS_WAIT_FLAG(RTOS_FLAG_HANDLE* flag, uint32_t timeout)
   {

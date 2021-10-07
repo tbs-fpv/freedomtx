@@ -115,7 +115,7 @@ void crsfThisDevice(uint8_t * pArr)
         if (*(pArr + LIBCRSF_PAYLOAD_START_ADD + 2) == LIBCRSF_GENERAL_CMD) {
           if (*(pArr + LIBCRSF_PAYLOAD_START_ADD + 3) == LIBCRSF_GENERAL_START_BOOTLOADER_SUBCMD) {
 #if defined(RADIO_FAMILY_TBS)
-            RTOS_DEL_TASK(menusTaskId); // avoid updating the screen
+            RTOS_DEL_TASK(menusTaskId.rtos_handle); // avoid updating the screen
             lcdOn();
             drawDownload();
             storageDirty(EE_GENERAL | EE_MODEL);
