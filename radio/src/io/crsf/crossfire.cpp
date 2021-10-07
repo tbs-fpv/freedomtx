@@ -601,6 +601,6 @@ void crsfRemoteRelatedHandler(uint8_t * pArr)
       break;
   }
 
-  RTOS_SET_FLAG(get_task_flag(CRSF_SD_TASK_FLAG));
+  RTOS_GIVE_SEM(get_task_sem(CRSF_SD_TASK_SEM));
 }
 #endif // LIBCRSF_ENABLE_OPENTX_RELATED

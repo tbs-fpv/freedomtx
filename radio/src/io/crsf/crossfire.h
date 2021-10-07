@@ -33,19 +33,19 @@ typedef enum {
   DIO_IRQ_TRAMPOLINE = 0,
   NOTIFICATION_TIMER_IRQ_TRAMPOLINE,
   DEBUG_UART_IRQ_TRAMPOLINE,
-  RTOS_WAIT_FLAG_TRAMPOILINE,
-  RTOS_CLEAR_FLAG_TRAMPOILINE,
+  RTOS_WAIT_SEM_TRAMPOILINE,
+  RTOS_CLEAR_SEM_TRAMPOILINE,
   WIFI_UART_IRQ_TRAMPOLINE,
   TRAMPOLINE_INDEX_COUNT
 } TRAMPOLINE_INDEX;
 
 typedef enum {
-  XF_TASK_FLAG = 0,
-  CRSF_SD_TASK_FLAG,
-  BOOTLOADER_ICON_WAIT_FLAG,
-  TASK_FLAG_COUNT,
-  TASK_FLAG_MAX = 10
-} TASK_FLAG_INDEX;
+  XF_TASK_SEM = 0,
+  CRSF_SD_TASK_SEM,
+  BOOTLOADER_ICON_WAIT_SEM,
+  TASK_SEM_COUNT,
+  TASK_SEM_MAX = 10
+} TASK_SEM_INDEX;
 
 typedef enum {
   CRSF_FLAG_SHOW_BOOTLOADER_ICON = 0,
@@ -58,7 +58,7 @@ typedef enum {
   CRSF_FLAG_MAX = 32,
 } CRSF_FLAG_INDEX;
 
-#define get_task_flag(i)    crossfireSharedData.taskFlag[i]
+#define get_task_sem(i)     crossfireSharedData.taskSem[i]
 #define getCrsfFlag(i)      (crossfireSharedData.crsfFlag & ( 1UL << i ) ? true : false )
 #define setCrsfFlag(i)      (crossfireSharedData.crsfFlag |= ( 1UL << i ))
 #define clearCrsfFlag(i)    (crossfireSharedData.crsfFlag &= ~( 1UL << i ))
@@ -116,7 +116,7 @@ typedef enum {
 struct CrossfireSharedData {
   uint32_t rtosApiVersion;
   uint32_t *trampoline;
-  uint8_t taskFlag[TASK_FLAG_MAX];
+  uint32_t *taskSem[TASK_SEM_MAX];
   volatile uint32_t crsfFlag;
   uint32_t reserved1[16];
   Fifo<uint8_t, CROSSFIRE_FIFO_SIZE> crsf_tx;   //from XF to OpenTX

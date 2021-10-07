@@ -332,6 +332,7 @@ TASK_FUNCTION(menusTask)
 }
 
 #if defined(INTERNAL_MODULE_CRSF) && !defined(SIMU)
+
 TASK_FUNCTION(systemTask)
 {
   static uint32_t getModelIdDelay = 0;
@@ -372,7 +373,9 @@ TASK_FUNCTION(systemTask)
   TASK_RETURN();
 }
 
-typedef void               (*FUNCPtr)(void*);
+typedef void      (*FUNCPtr)(void *);
+StaticSemaphore_t xSemaphoreBuffer[TASK_SEM_COUNT];
+
 void crossfireTasksCreate()
 {
   RTOS_CREATE_TASK(crossfireTaskId, (FUNCPtr)CROSSFIRE_TASK_ADDRESS, "crossfire", crossfireStack, CROSSFIRE_STACK_SIZE, CROSSFIRE_TASK_PRIO);
@@ -381,16 +384,16 @@ void crossfireTasksCreate()
 
 void crossfireTasksStart()
 {
-  uint8_t taskFlag[TASK_FLAG_MAX] = {0};
+  SemaphoreHandle_t taskSem[TASK_SEM_COUNT] = {0};
   // Test if crossfire task is available and start it
   if (*(uint32_t *)CROSSFIRE_TASK_ADDRESS != 0xFFFFFFFF) {
     crossfireTasksCreate();
-    RTOS_CREATE_FLAG( taskFlag[XF_TASK_FLAG]);
-    RTOS_CREATE_FLAG( taskFlag[CRSF_SD_TASK_FLAG]);
-    RTOS_CREATE_FLAG( taskFlag[BOOTLOADER_ICON_WAIT_FLAG]);
+    RTOS_CREATE_SEM( taskSem[XF_TASK_SEM], xSemaphoreBuffer[XF_TASK_SEM]);
+    RTOS_CREATE_SEM( taskSem[CRSF_SD_TASK_SEM], xSemaphoreBuffer[CRSF_SD_TASK_SEM]);
+    RTOS_CREATE_SEM( taskSem[BOOTLOADER_ICON_WAIT_SEM], xSemaphoreBuffer[BOOTLOADER_ICON_WAIT_SEM]);
 
-    for (uint8_t i = 0; i < TASK_FLAG_MAX; i++) {
-      crossfireSharedData.taskFlag[i] = taskFlag[i];
+    for (uint8_t i = 0; i < TASK_SEM_COUNT; i++) {
+      crossfireSharedData.taskSem[i] = (uint32_t *)taskSem[i];
     }
   }
 }

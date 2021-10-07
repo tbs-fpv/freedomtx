@@ -450,7 +450,7 @@ uint8_t getBoardOffState(){
 void boardReboot2bootloader(uint32_t isNeedFlash, uint32_t HwId, uint32_t sn){
   usbStop();
   crossfirePowerOff();
-  RTOS_SET_FLAG(get_task_flag(XF_TASK_FLAG));
+  RTOS_GIVE_SEM(get_task_sem(XF_TASK_SEM));
   writeBackupReg(BKREG_PREPARE_FWUPDATE, isNeedFlash);
   writeBackupReg(BKREG_HW_ID, HwId);
   writeBackupReg(BKREG_SERIAL_NO, sn);
@@ -490,10 +490,10 @@ static uint8_t checkDefaultWord(){
 void trampolineInit(void)
 {
   memset(trampoline, 0, sizeof(uint32_t) * TRAMPOLINE_INDEX_COUNT);
-#if 0
-  trampoline[RTOS_WAIT_FLAG_TRAMPOILINE] = (uint32_t)(&CoWaitForSingleFlag);
-  trampoline[RTOS_CLEAR_FLAG_TRAMPOILINE] = (uint32_t)(&CoClearFlag);
-#endif
+
+  trampoline[RTOS_WAIT_SEM_TRAMPOILINE] = (uint32_t)(&xQueueSemaphoreTake);
+  trampoline[RTOS_CLEAR_SEM_TRAMPOILINE] = (uint32_t)(&xQueueGenericSend);
+
   crossfireSharedData.trampoline = trampoline;
 }
 
@@ -609,25 +609,22 @@ void ESP_DMA_Stream_IRQHandler(void)
 
 void INTERRUPT_EXTI_IRQHandler(void)
 {
-#if 0
   DEBUG_INTERRUPT(INT_EXTI15_10);
-  CoEnterISR();
+  taskENTER_CRITICAL();
   void (* exti_irq)(void);
   if (crossfireSharedData.trampoline[DIO_IRQ_TRAMPOLINE]) {
     exti_irq = (void (*)(void))crossfireSharedData.trampoline[DIO_IRQ_TRAMPOLINE];
     /* call DIOCN handler of crossfire */
     exti_irq();
-    isr_SetFlag(get_task_flag(XF_TASK_FLAG));
+    xSemaphoreGiveFromISR(get_task_sem(XF_TASK_SEM), NULL);
   }
-  CoExitISR();
-#endif
+  taskEXIT_CRITICAL();
 }
 
 void INTERRUPT_TIM13_IRQHandler()
 {
-#if 0
   DEBUG_INTERRUPT(INT_TIM13);
-  CoEnterISR();
+  taskENTER_CRITICAL();
   if (INTERRUPT_NOT_TIMER->SR & TIM_SR_UIF)
   {
     INTERRUPT_NOT_TIMER->SR &= ~TIM_SR_UIF;
@@ -636,11 +633,10 @@ void INTERRUPT_TIM13_IRQHandler()
       timer_irq = (void (*)(void))crossfireSharedData.trampoline[NOTIFICATION_TIMER_IRQ_TRAMPOLINE];
       /* call notification timer handler of crossfire */
       timer_irq();
-      isr_SetFlag( get_task_flag( XF_TASK_FLAG ));
+      xSemaphoreGiveFromISR(get_task_sem(XF_TASK_SEM), NULL);
     }
   }
-  CoExitISR();
-#endif
+  taskEXIT_CRITICAL();
 }
 
 #if defined(DEBUG) && defined(AUX_SERIAL_GPIO)
