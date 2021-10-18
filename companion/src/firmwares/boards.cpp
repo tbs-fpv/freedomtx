@@ -92,6 +92,10 @@ uint32_t Boards::getFourCC(Type board)
       return 0x4178746F;
     case BOARD_RADIOMASTER_T8:
       return 0x4378746F;
+    case BOARD_TBS_TANGO:
+      return 0x4478746F;
+    case BOARD_TBS_MAMBO:
+      return 0x4578746F;
     default:
       return 0;
   }
@@ -128,6 +132,8 @@ int Boards::getEEpromSize(Board::Type board)
     case BOARD_JUMPER_T16:
     case BOARD_JUMPER_T18:
     case BOARD_RADIOMASTER_TX16S:
+    case BOARD_TBS_TANGO:
+    case BOARD_TBS_MAMBO:
       return 0;
     default:
       return 0;
@@ -163,6 +169,8 @@ int Boards::getFlashSize(Type board)
     case BOARD_JUMPER_T16:
     case BOARD_JUMPER_T18:
     case BOARD_RADIOMASTER_TX16S:
+    case BOARD_TBS_TANGO:
+    case BOARD_TBS_MAMBO:
       return FSIZE_HORUS;
     case BOARD_UNKNOWN:
       return FSIZE_MAX;
@@ -276,6 +284,32 @@ SwitchInfo Boards::getSwitchInfo(Board::Type board, int index)
   };
   if (index < DIM(switches))
     return switches[index];
+  }
+  else if (IS_FAMILY_TBS(board)) {
+    if (board == Board::BOARD_TBS_TANGO) {
+      const Board::SwitchInfo switches[] = {
+        {SWITCH_2POS,   "SA"},
+        {SWITCH_3POS,   "SB"},
+        {SWITCH_3POS,   "SC"},
+        {SWITCH_2POS,   "SD"},
+        {SWITCH_2POS,   "SE"},
+        {SWITCH_2POS,   "SF"},
+      };
+      if (index < DIM(switches))
+        return switches[index];
+    }
+    else if (board == Board::BOARD_TBS_MAMBO) {
+      const Board::SwitchInfo switches[] = {
+        {SWITCH_3POS,   "SA"},
+        {SWITCH_3POS,   "SB"},
+        {SWITCH_3POS,   "SC"},
+        {SWITCH_3POS,   "SD"},
+        {SWITCH_2POS,   "SE"},
+        {SWITCH_2POS,   "SF"},
+      };
+      if (index < DIM(switches))
+        return switches[index];
+    }
   }
   else if (IS_TARANIS(board)) {
     const Board::SwitchInfo switches[] = {
@@ -599,6 +633,10 @@ QString Boards::getBoardName(Board::Type board)
       return "Radiomaster TX12";
     case BOARD_RADIOMASTER_T8:
       return "Radiomaster T8";
+    case BOARD_TBS_TANGO:
+      return "TBS TANGO";
+    case BOARD_TBS_MAMBO:
+      return "TBS MAMBO";
     default:
       return CPN_STR_UNKNOWN_ITEM;
   }

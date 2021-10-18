@@ -72,6 +72,10 @@ const char * OpenTxEepromInterface::getName()
       return "OpenTX for Radiomaster TX12";
     case BOARD_RADIOMASTER_T8:
       return "OpenTX for Radiomaster T8";
+    case BOARD_TBS_TANGO:
+      return "OpenTX for TBS TANGO II";
+    case BOARD_TBS_MAMBO:
+      return "OpenTX for TBS MAMBO";
     case BOARD_TARANIS_X9D:
       return "OpenTX for FrSky Taranis X9D";
     case BOARD_TARANIS_X9DP:
@@ -1367,6 +1371,14 @@ void registerOpenTxFirmwares()
   firmware->addOption("externalaccessmod", Firmware::tr("Support hardware mod: R9M ACCESS"));
   registerOpenTxFirmware(firmware);
   addOpenTxRfOptions(firmware, FLEX);
+
+  /* TBS TANGO board */
+  firmware = new OpenTxFirmware("opentx-tango", Firmware::tr("TBS Tango II"), BOARD_TBS_TANGO);
+  registerOpenTxFirmware(firmware);
+
+  /* TBS MAMBO board */
+  firmware = new OpenTxFirmware("opentx-mambo", Firmware::tr("TBS MAMBO"), BOARD_TBS_MAMBO);
+  registerOpenTxFirmware(firmware);
 
   /* 9XR-Pro */
   firmware = new OpenTxFirmware("opentx-9xrpro", Firmware::tr("Turnigy 9XR-PRO"), BOARD_9XRPRO);

@@ -61,6 +61,8 @@ namespace Board {
     BOARD_RADIOMASTER_TX12,
     BOARD_RADIOMASTER_T8,
     BOARD_JUMPER_TLITE,
+    BOARD_TBS_TANGO,
+    BOARD_TBS_MAMBO,
     BOARD_TYPE_COUNT,
     BOARD_TYPE_MAX = BOARD_TYPE_COUNT - 1
   };
@@ -344,9 +346,29 @@ inline bool IS_FAMILY_HORUS(Board::Type board)
   return IS_HORUS_X12S(board) || IS_HORUS_X10(board);
 }
 
+inline bool IS_TBS_TANGO(Board::Type board)
+{
+  return board == Board::BOARD_TBS_TANGO;
+}
+
+inline bool IS_TBS_MAMBO(Board::Type board)
+{
+  return board == Board::BOARD_TBS_MAMBO;
+}
+
+inline bool IS_FAMILY_TBS(Board::Type board)
+{
+  return IS_TBS_TANGO(board) || IS_TBS_MAMBO(board);
+}
+
 inline bool IS_FAMILY_HORUS_OR_T16(Board::Type board)
 {
   return IS_FAMILY_HORUS(board) || IS_FAMILY_T16(board);
+}
+
+inline bool IS_STORAGE_IN_SD(Board::Type board)
+{
+  return IS_FAMILY_HORUS_OR_T16(board) || IS_FAMILY_TBS(board);
 }
 
 inline bool IS_HORUS_OR_TARANIS(Board::Type board)
@@ -356,7 +378,7 @@ inline bool IS_HORUS_OR_TARANIS(Board::Type board)
 
 inline bool IS_STM32(Board::Type board)
 {
-  return IS_TARANIS(board) || IS_FAMILY_HORUS_OR_T16(board);
+  return IS_TARANIS(board) || IS_FAMILY_HORUS_OR_T16(board) || IS_FAMILY_TBS(board);
 }
 
 inline bool IS_ARM(Board::Type board)
