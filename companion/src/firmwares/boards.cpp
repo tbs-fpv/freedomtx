@@ -359,6 +359,10 @@ int Boards::getCapability(Board::Type board, Board::Capability capability)
       return 4;
 
     case Pots:
+      if (IS_TBS_TANGO(board))
+        return 0;
+      if (IS_TBS_MAMBO(board))
+        return 2;
       if (IS_TARANIS_X9LITE(board))
         return 1;
       else if (IS_JUMPER_TLITE(board))
@@ -420,6 +424,8 @@ int Boards::getCapability(Board::Type board, Board::Capability capability)
         return 7;
       else if (board == BOARD_TARANIS_X7)
         return 8;
+      else if (IS_FAMILY_TBS(board))
+        return 6;
       else if (board == BOARD_JUMPER_TLITE)
         return 4;
       else if (IS_FAMILY_T12(board))

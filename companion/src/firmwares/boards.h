@@ -321,6 +321,21 @@ inline bool IS_TARANIS_X9E(Board::Type board)
   return board == Board::BOARD_TARANIS_X9E;
 }
 
+inline bool IS_TBS_TANGO(Board::Type board)
+{
+  return board == Board::BOARD_TBS_TANGO;
+}
+
+inline bool IS_TBS_MAMBO(Board::Type board)
+{
+  return board == Board::BOARD_TBS_MAMBO;
+}
+
+inline bool IS_FAMILY_TBS(Board::Type board)
+{
+  return IS_TBS_TANGO(board) || IS_TBS_MAMBO(board);
+}
+
 inline bool IS_TARANIS_SMALL(Board::Type board)
 {
   return IS_TARANIS_X7(board) || IS_TARANIS_XLITE(board) || IS_TARANIS_X9LITE(board) || IS_FAMILY_T12(board);
@@ -328,7 +343,7 @@ inline bool IS_TARANIS_SMALL(Board::Type board)
 
 inline bool IS_TARANIS(Board::Type board)
 {
-  return IS_TARANIS_X9(board) || IS_TARANIS_SMALL(board);
+  return IS_TARANIS_X9(board) || IS_TARANIS_SMALL(board) || IS_FAMILY_TBS(board);
 }
 
 inline bool IS_HORUS_X10(Board::Type board)
@@ -346,34 +361,19 @@ inline bool IS_FAMILY_HORUS(Board::Type board)
   return IS_HORUS_X12S(board) || IS_HORUS_X10(board);
 }
 
-inline bool IS_TBS_TANGO(Board::Type board)
-{
-  return board == Board::BOARD_TBS_TANGO;
-}
-
-inline bool IS_TBS_MAMBO(Board::Type board)
-{
-  return board == Board::BOARD_TBS_MAMBO;
-}
-
-inline bool IS_FAMILY_TBS(Board::Type board)
-{
-  return IS_TBS_TANGO(board) || IS_TBS_MAMBO(board);
-}
-
 inline bool IS_FAMILY_HORUS_OR_T16(Board::Type board)
 {
   return IS_FAMILY_HORUS(board) || IS_FAMILY_T16(board);
 }
 
-inline bool IS_STORAGE_IN_SD(Board::Type board)
+inline bool IS_FAMILY_HORUS_OR_T16_OR_TBS(Board::Type board)
 {
-  return IS_FAMILY_HORUS_OR_T16(board) || IS_FAMILY_TBS(board);
+  return IS_FAMILY_HORUS(board) || IS_FAMILY_T16(board) || IS_FAMILY_TBS(board);
 }
 
 inline bool IS_HORUS_OR_TARANIS(Board::Type board)
 {
-  return IS_FAMILY_HORUS_OR_T16(board) || IS_TARANIS(board);
+  return IS_FAMILY_HORUS_OR_T16_OR_TBS(board) || IS_TARANIS(board);
 }
 
 inline bool IS_STM32(Board::Type board)

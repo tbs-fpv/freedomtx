@@ -244,6 +244,8 @@ class GeneralSettings {
     int gyroMax;
     int gyroOffset;
 
+    bool enableRotaryInverse;
+
     int pwrOnSpeed;
     int pwrOffSpeed;
 

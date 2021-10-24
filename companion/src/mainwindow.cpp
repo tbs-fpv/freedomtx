@@ -903,7 +903,7 @@ void MainWindow::readEeprom()
 {
   Board::Type board = getCurrentBoard();
   QString tempFile;
-  if (IS_STORAGE_IN_SD(board))
+  if (IS_FAMILY_HORUS_OR_T16_OR_TBS(board))
     tempFile = generateProcessUniqueTempFileName("temp.otx");
   else
     tempFile = generateProcessUniqueTempFileName("temp.bin");

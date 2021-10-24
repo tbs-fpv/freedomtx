@@ -1547,7 +1547,7 @@ void MdiChild::writeEeprom()  // write to Tx
   }
 
   Board::Type board = getCurrentBoard();
-  if (IS_FAMILY_HORUS_OR_T16(board)) {
+  if (IS_FAMILY_HORUS_OR_T16_OR_TBS(board)) {
     QString radioPath = findMassstoragePath("RADIO", true);
     qDebug() << "Searching for SD card, found" << radioPath;
     if (radioPath.isEmpty()) {

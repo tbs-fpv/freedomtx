@@ -2327,7 +2327,7 @@ OpenTxModelData::OpenTxModelData(ModelData & modelData, Board::Type board, unsig
       internalField.Append(new BoolField<1>(this, modelData.timers[i].minuteBeep));
       internalField.Append(new UnsignedField<2>(this, modelData.timers[i].persistent));
       internalField.Append(new SpareBitsField<3>(this));
-      if (IS_TARANIS(board))
+      if (IS_TARANIS(board) && !IS_FAMILY_TBS(board))
         internalField.Append(new ZCharField<8>(this, modelData.timers[i].name, "Timer name"));
       else
         internalField.Append(new ZCharField<3>(this, modelData.timers[i].name, "Timer name"));
@@ -2681,7 +2681,7 @@ OpenTxGeneralData::OpenTxGeneralData(GeneralSettings & generalData, Board::Type 
   internalField.Append(new UnsignedField<3>(this, generalData.telemetryBaudrate));
   if (IS_FAMILY_HORUS_OR_T16(board))
     internalField.Append(new SpareBitsField<3>(this));
-  else if (IS_TARANIS(board))
+  else if (IS_TARANIS(board) && !IS_FAMILY_TBS(board))
     internalField.Append(new SignedField<3>(this, generalData.splashDuration));
   else
     internalField.Append(new UnsignedField<3>(this, generalData.splashMode)); // TODO
@@ -2892,6 +2892,10 @@ OpenTxGeneralData::OpenTxGeneralData(GeneralSettings & generalData, Board::Type 
     for (int i=0; i<Boards::getCapability(board, Board::Sliders); ++i) {
       internalField.Append(new ZCharField<3>(this, generalData.sliderName[i], "Slider name"));
     }
+
+    if (IS_FAMILY_TBS(board)) {
+      internalField.Append(new CharField<17>(this, generalData.currModelFilename, true, "Current model filename"));
+    }
   }
 
   if (IS_FAMILY_HORUS_OR_T16(board)) {
@@ -2918,6 +2922,10 @@ OpenTxGeneralData::OpenTxGeneralData(GeneralSettings & generalData, Board::Type 
   if (version >= 219 && IS_TARANIS_XLITES(board)) {
     internalField.Append(new SignedField<8>(this, generalData.gyroMax, "Gyro full scale"));
     internalField.Append(new SignedField<8>(this, generalData.gyroOffset, "Gyro Offset"));
+  }
+
+  if (IS_FAMILY_TBS(board)) {
+    internalField.Append(new BoolField<1>(this, generalData.enableRotaryInverse));
   }
 }
 

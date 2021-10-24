@@ -715,7 +715,7 @@ int OpenTxFirmware::getCapability(::Capability capability)
     case DangerousFunctions:
       return id.contains("danger") ? 1 : 0;
     case HasModelCategories:
-      return IS_FAMILY_HORUS_OR_T16(board);
+      return IS_FAMILY_HORUS_OR_T16_OR_TBS(board);
     case HasSwitchableJack:
       return IS_TARANIS_XLITES(board);
     case HasSportConnector:
