@@ -94,6 +94,14 @@ cmake ${COMMON_OPTIONS} -DPCB=X7 -DPCBREV=TLITE ${SRCDIR}
 make -j${JOBS} libsimulator
 rm CMakeCache.txt
 
+cmake ${COMMON_OPTIONS} -DPCB=TANGO ${SRCDIR}
+make -j${JOBS} libsimulator
+rm CMakeCache.txt
+
+cmake ${COMMON_OPTIONS} -DPCB=MAMBO ${SRCDIR}
+make -j${JOBS} libsimulator
+rm CMakeCache.txt
+
 cmake ${COMMON_OPTIONS} -DPCB=X9D ${SRCDIR}
 make -j${JOBS} libsimulator
 rm CMakeCache.txt

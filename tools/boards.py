@@ -29,6 +29,12 @@ boards = {
     "X7": {
         "PCB": "X7",
     },
+    "TANGO": {
+        "PCB": "TANGO",
+    },
+    "MAMBO": {
+        "PCB": "MAMBO",
+    },
     "X7ACCESS": {
         "PCB": "X7",
         "PCBREV": "ACCESS",

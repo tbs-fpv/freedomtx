@@ -353,6 +353,12 @@ int OpenTxEepromInterface::save(uint8_t * eeprom, const RadioData & radioData, u
   else if (IS_RADIOMASTER_T8(board)) {
     variant |= RADIOMASTER_T8_VARIANT;
   }
+  else if (IS_TBS_TANGO(board)) {
+    variant |= TBS_TANGO_VARIANT;
+  }
+  else if (IS_TBS_MAMBO(board)) {
+    variant |= TBS_MAMBO_VARIANT;
+  }
   OpenTxGeneralData generator((GeneralSettings &)radioData.generalSettings, board, version, variant);
   // generator.dump();
   QByteArray data;
@@ -443,7 +449,7 @@ int OpenTxFirmware::getCapability(::Capability capability)
 {
   switch (capability) {
     case Models:
-      if (IS_FAMILY_HORUS_OR_T16(board))
+      if (IS_FAMILY_HORUS_OR_T16_OR_TBS(board))
         return 0;
       else
         return 60;
@@ -633,6 +639,8 @@ int OpenTxFirmware::getCapability(::Capability capability)
     case LcdWidth:
       if (IS_FAMILY_HORUS_OR_T16(board))
         return 480;
+      else if (IS_TBS_TANGO(board) || IS_TBS_MAMBO(board))
+        return 128;
       else if (IS_TARANIS_SMALL(board))
         return 128;
       else if (IS_TARANIS(board))
@@ -642,17 +650,30 @@ int OpenTxFirmware::getCapability(::Capability capability)
     case LcdHeight:
       if (IS_FAMILY_HORUS_OR_T16(board))
         return 272;
+      else if (IS_TBS_TANGO(board))
+        return 96;
+      else if (IS_TBS_MAMBO(board))
+        return 64;
       else
         return 64;
     case LcdDepth:
       if (IS_FAMILY_HORUS_OR_T16(board))
         return 16;
+      else if (IS_TBS_TANGO(board))
+        return 4;
+      else if (IS_TBS_MAMBO(board))
+        return 1;
       else if (IS_TARANIS_SMALL(board))
         return 1;
       else if (IS_TARANIS(board))
         return 4;
       else
         return 1;
+    case LcdRevert:
+      if (IS_TBS_TANGO(board))
+        return true;
+      else
+        return false;
     case GetThrSwitch:
       return (IS_HORUS_OR_TARANIS(board) ? SWITCH_SF1 : SWITCH_THR);
     case HasDisplayText:
@@ -701,6 +722,10 @@ int OpenTxFirmware::getCapability(::Capability capability)
         return RADIOMASTER_TX12_VARIANT;
       else if (IS_RADIOMASTER_T8(board))
         return RADIOMASTER_T8_VARIANT;
+      else if (IS_TBS_TANGO(board))
+        return TBS_TANGO_VARIANT;
+      else if (IS_TBS_MAMBO(board))
+        return TBS_MAMBO_VARIANT;
       else
         return 0;
     case MavlinkTelemetry:
@@ -728,7 +753,7 @@ int OpenTxFirmware::getCapability(::Capability capability)
       else
         return 40;
     case HasAuxSerialMode:
-      return (IS_FAMILY_HORUS_OR_T16(board) && !IS_TARANIS_SMALL(board)) ? true : false;
+      return (IS_FAMILY_HORUS_OR_T16_OR_TBS(board) && !IS_TARANIS_SMALL(board)) ? true : false;
     case HasAux2SerialMode:
       return (IS_FAMILY_HORUS_OR_T16(board) && !IS_TARANIS_SMALL(board)) ? true : false;
     case HasBluetooth:
@@ -738,7 +763,7 @@ int OpenTxFirmware::getCapability(::Capability capability)
     case HasADCJitterFilter:
       return IS_HORUS_OR_TARANIS(board) ? true : false;
     case HasTelemetryBaudrate:
-      return IS_HORUS_OR_TARANIS(board) ? true : false;
+      return (IS_HORUS_OR_TARANIS(board) && !IS_FAMILY_TBS(board)) ? true : false;
 
     default:
       return 0;

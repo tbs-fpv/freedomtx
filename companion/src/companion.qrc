@@ -127,6 +127,24 @@
     <file>images/simulator/X7/right.png</file>
     <file>images/simulator/X7/right_ent.png</file>
     <file>images/simulator/X7/top.png</file>
+    <file>images/simulator/TANGO/bottom.png</file>
+    <file>images/simulator/TANGO/left.png</file>
+    <file>images/simulator/TANGO/left_exit.png</file>
+    <file>images/simulator/TANGO/left_menu.png</file>
+    <file>images/simulator/TANGO/left_page.png</file>
+    <file>images/simulator/TANGO/left_scrnshot.png</file>
+    <file>images/simulator/TANGO/right.png</file>
+    <file>images/simulator/TANGO/right_ent.png</file>
+    <file>images/simulator/TANGO/top.png</file>
+    <file>images/simulator/MAMBO/bottom.png</file>
+    <file>images/simulator/MAMBO/left.png</file>
+    <file>images/simulator/MAMBO/left_exit.png</file>
+    <file>images/simulator/MAMBO/left_menu.png</file>
+    <file>images/simulator/MAMBO/left_page.png</file>
+    <file>images/simulator/MAMBO/left_scrnshot.png</file>
+    <file>images/simulator/MAMBO/right.png</file>
+    <file>images/simulator/MAMBO/right_ent.png</file>
+    <file>images/simulator/MAMBO/top.png</file>
     <file>images/simulator/X9E/bottom.png</file>
     <file>images/simulator/X9E/left.png</file>
     <file>images/simulator/X9E/left_exit.png</file>

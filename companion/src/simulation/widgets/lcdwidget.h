@@ -57,12 +57,13 @@ class LcdWidget : public QWidget
       }
     }
 
-    void setData(unsigned char *buf, int width, int height, int depth=1)
+    void setData(unsigned char *buf, int width, int height, int depth=1, bool invert=false)
     {
       lcdBuf = buf;
       lcdWidth = width;
       lcdHeight = height;
       lcdDepth = depth;
+      lcdInvert = invert;
       if (depth >= 8)
         lcdSize = (width * height) * ((depth+7) / 8);
       else
@@ -123,6 +124,7 @@ class LcdWidget : public QWidget
     int lcdHeight;
     int lcdDepth;
     int lcdSize;
+    bool lcdInvert;
 
     unsigned char *lcdBuf;
     unsigned char *localBuf;
@@ -197,6 +199,12 @@ class LcdWidget : public QWidget
           }
           // lcdDepth == 4
           z = (y & 1) ? (localBuf[idx] >> 4) : (localBuf[idx] & 0x0F);
+          if (lcdInvert) {
+            int xx = lcdWidth - x - 1;
+            int yy = lcdHeight - y - 1;
+            idx = yy * (lcdWidth / 2) + (xx / 2);
+            z = (xx & 1) ? (localBuf[idx] & 0x0F) : (localBuf[idx] >> 4);
+          }
           if (!z)
             continue;
           if (z != previousDepth) {
@@ -210,7 +218,6 @@ class LcdWidget : public QWidget
           p.drawRect(2*x, 2*y, 1, 1);
         }
       }
-
     }
 
     void paintEvent(QPaintEvent*)

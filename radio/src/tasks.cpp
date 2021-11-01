@@ -308,7 +308,7 @@ TASK_FUNCTION(menusTask)
     resetForcePowerOffRequest();
   }
 
-#if defined(INTERNAL_MODULE_CRSF) && defined(LIBCRSF_ENABLE_OPENTX_RELATED) && defined(LIBCRSF_ENABLE_SD)
+#if defined(INTERNAL_MODULE_CRSF) && defined(LIBCRSF_ENABLE_OPENTX_RELATED) && defined(LIBCRSF_ENABLE_SD) && !defined(SIMU)
   if ((*(uint32_t *)CROSSFIRE_TASK_ADDRESS != 0xFFFFFFFF) &&
     getSelectedUsbMode() != USB_MASS_STORAGE_MODE && sdMounted()) {
     setCrsfFlag( CRSF_FLAG_EEPROM_SAVE);

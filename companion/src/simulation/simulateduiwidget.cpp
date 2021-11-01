@@ -187,7 +187,7 @@ void SimulatedUIWidget::setLcd(LcdWidget * lcd)
 {
   m_lcd = lcd;
   Firmware * firmware = getCurrentFirmware();
-  m_lcd->setData(m_simulator->getLcd(), firmware->getCapability(LcdWidth), firmware->getCapability(LcdHeight), firmware->getCapability(LcdDepth));
+  m_lcd->setData(m_simulator->getLcd(), firmware->getCapability(LcdWidth), firmware->getCapability(LcdHeight), firmware->getCapability(LcdDepth), firmware->getCapability(LcdRevert));
 
   if (!m_backlightColors.size())
     return;

@@ -127,6 +127,7 @@ enum Capability {
   LcdWidth,
   LcdHeight,
   LcdDepth,
+  LcdRevert,
   GetThrSwitch,
   HasDisplayText,
   HasTopLcd,

@@ -118,6 +118,8 @@ namespace Ui {
   class SimulatedUIWidgetTX16S;
   class SimulatedUIWidgetTX12;
   class SimulatedUIWidgetT8;
+  class SimulatedUIWidgetTango;
+  class SimulatedUIWidgetMambo;
 }
 
 class SimulatedUIWidget9X: public SimulatedUIWidget
@@ -316,5 +318,28 @@ class SimulatedUIWidgetTX16S: public SimulatedUIWidget
     Ui::SimulatedUIWidgetTX16S * ui;
 };
 
+class SimulatedUIWidgetTango: public SimulatedUIWidget
+{
+  Q_OBJECT
+
+  public:
+    explicit SimulatedUIWidgetTango(SimulatorInterface * simulator, QWidget * parent = nullptr);
+    virtual ~SimulatedUIWidgetTango();
+
+  private:
+    Ui::SimulatedUIWidgetTango * ui;
+};
+
+class SimulatedUIWidgetMambo: public SimulatedUIWidget
+{
+  Q_OBJECT
+
+  public:
+    explicit SimulatedUIWidgetMambo(SimulatorInterface * simulator, QWidget * parent = nullptr);
+    virtual ~SimulatedUIWidgetMambo();
+
+  private:
+    Ui::SimulatedUIWidgetMambo * ui;
+};
 
 #endif // SIMULATEDUIWIDGET_H
